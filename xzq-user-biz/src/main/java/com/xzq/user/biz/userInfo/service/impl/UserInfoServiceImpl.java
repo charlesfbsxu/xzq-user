@@ -3,12 +3,16 @@ package com.xzq.user.biz.userInfo.service.impl;
 import com.xzq.user.biz.userInfo.bo.UserInfoBO;
 import com.xzq.user.biz.userInfo.service.UserInfoService;
 import com.xzq.user.dao.domain.UserInfoDO;
-import com.xzq.user.dao.mapper.UserInfoMapper;
+import com.xzq.user.dao.dto.UserInfoQueryDTO;
+import com.xzq.user.dao.mapper.UserInfoDao;
+import org.apache.commons.collections4.CollectionUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
@@ -17,16 +21,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     private Mapper mapper;
 
     @Autowired
-    private UserInfoMapper userInfoMapper;
+    private UserInfoDao userInfoDao;
 
     @Override
     public long insert(UserInfoBO record) {
-        if(null == record){
+        if (null == record) {
             return 0;
         }
 
         UserInfoDO userInfoDO = mapper.map(record, UserInfoDO.class);
-        userInfoMapper.insert(userInfoDO);
+        userInfoDao.insert(userInfoDO);
         return userInfoDO.getId();
     }
 
@@ -42,11 +46,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserInfoBO findById(Long id) {
-        return null;
+        UserInfoDO userInfoDO = userInfoDao.findById(id);
+        if (userInfoDO == null) {
+            return null;
+        }
+        return mapper.map(userInfoDO, UserInfoBO.class);
     }
 
     @Override
-    public List<UserInfoBO> findByCondition(UserInfoBO record) {
-        return null;
+    public List<UserInfoBO> findByCondition(UserInfoQueryDTO record) {
+        List<UserInfoDO> userInfoDOS = userInfoDao.findByCondition(record);
+        if (CollectionUtils.isEmpty(userInfoDOS)) {
+            return Collections.EMPTY_LIST;
+        }
+        return userInfoDOS.stream().map(i -> mapper.map(i, UserInfoBO.class)).collect(Collectors.toList());
     }
 }

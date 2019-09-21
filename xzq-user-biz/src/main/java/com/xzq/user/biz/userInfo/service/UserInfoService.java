@@ -1,6 +1,7 @@
 package com.xzq.user.biz.userInfo.service;
 
 import com.xzq.user.biz.userInfo.bo.UserInfoBO;
+import com.xzq.user.dao.dto.UserInfoQueryDTO;
 
 import java.util.List;
 
@@ -70,6 +71,6 @@ public interface UserInfoService {
      * Date 2019年08月10日
      * </PRE>
      */
-    List<UserInfoBO> findByCondition(UserInfoBO record);
+    List<UserInfoBO> findByCondition(UserInfoQueryDTO record);
 
 }

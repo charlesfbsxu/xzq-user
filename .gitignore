@@ -37,3 +37,4 @@ build.log
 .gitignore
 derby.log
 metastore_db
+*.log

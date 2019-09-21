@@ -1,10 +1,18 @@
 package com.xzq.user.dao.mapper;
 
 import com.xzq.user.dao.domain.UserInfoDO;
+import com.xzq.user.dao.dto.UserInfoQueryDTO;
 
 import java.util.List;
 
-public interface UserInfoMapper {
+/**
+ * 用户基本信息表 DAO接口
+ *
+ * @Author xzq
+ * @Date 2019年09月16日
+ */
+public interface UserInfoDao {
+
     /**
      *
      * 方法insert的功能描述：新增用户基本信息表
@@ -12,8 +20,8 @@ public interface UserInfoMapper {
      * @param record
      * @return int
      * <PRE>
-     * author xzq
-     * Date 2019年08月10日
+     * author xzq 
+     * Date 2019年09月16日
      * </PRE>
      */
     int insert(UserInfoDO record);
@@ -25,8 +33,8 @@ public interface UserInfoMapper {
      * @param id
      * @return int
      * <PRE>
-     * author xzq
-     * Date 2019年08月10日
+     * author xzq 
+     * Date 2019年09月16日
      * </PRE>
      */
     int deleteById(Long id);
@@ -38,8 +46,8 @@ public interface UserInfoMapper {
      * @param record
      * @return int
      * <PRE>
-     * author xzq
-     * Date 2019年08月10日
+     * author xzq 
+     * Date 2019年09月16日
      * </PRE>
      */
     int updateById(UserInfoDO record);
@@ -51,24 +59,23 @@ public interface UserInfoMapper {
      * @param id
      * @return UserInfoDO
      * <PRE>
-     * author xzq
-     * Date 2019年08月10日
+     * author xzq 
+     * Date 2019年09月16日
      * </PRE>
      */
     UserInfoDO findById(Long id);
 
 
-    /**
+     /**
      *
      * 方法findByCondition的功能描述：根据用户基本信息表查询用户基本信息表
      *
      * @param record
      * @return UserInfoDO
-     *
-    <PRE>
-     * author xzq
-     * Date 2019年08月10日
-     * </PRE>
+     *<PRE>
+      * author xzq
+      * Date 2019年09月16日
+      * </PRE>
      */
-    List<UserInfoDO> findByCondition(UserInfoDO record);
+     List<UserInfoDO> findByCondition(UserInfoQueryDTO record);
 }

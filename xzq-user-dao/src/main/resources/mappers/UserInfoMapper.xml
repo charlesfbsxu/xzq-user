@@ -1,34 +1,103 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xzq.user.dao.mapper.UserInfoMapper">
-    <resultMap id="BaseResultMap" type="com.xzq.user.dao.domain.UserInfoDO">
-        <result column="id" property="id"/>
-        <result column="user_name" property="userName"/>
-        <result column="age" property="age"/>
-        <result column="adress" property="adress"/>
-        <result column="gmt_create_user" property="gmtCreateUser"/>
-        <result column="gmt_update_user" property="gmtUpdateUser"/>
-        <result column="gmt_create_date" property="gmtCreateDate"/>
-        <result column="gmt_update_date" property="gmtUpdateDate"/>
-    </resultMap>
+<mapper namespace="com.xzq.user.dao.mapper.UserInfoDao">
+	<resultMap id="BaseResultMap" type="com.xzq.user.dao.domain.UserInfoDO">
+		<result column="id" property="id" />
+		<result column="user_name" property="userName" />
+		<result column="age" property="age" />
+		<result column="adress" property="adress" />
+		<result column="gmt_create_user" property="gmtCreateUser" />
+		<result column="gmt_update_user" property="gmtUpdateUser" />
+		<result column="gmt_create_date" property="gmtCreateDate" />
+		<result column="gmt_update_date" property="gmtUpdateDate" />
+	</resultMap>
+	
+	<parameterMap id="UserInfoDO" type="com.xzq.user.dao.domain.UserInfoDO"/>
+	<parameterMap id="UserInfoQueryDTO" type="com.xzq.user.dao.dto.UserInfoQueryDTO"/>
 
-    <parameterMap id="userInfoDO" type="com.xzq.user.dao.domain.UserInfoDO"/>
-
-    <sql id="Base_Column_List">
+	<sql id="Base_Column_List">
 		id,user_name, age, adress, gmt_create_user, gmt_update_user, gmt_create_date, gmt_update_date
 	</sql>
-
-    <insert id="insert" parameterMap="userInfoDO">
-	<selectKey keyProperty="id" resultType="long" order="AFTER">
-        SELECT LAST_INSERT_ID()
-    </selectKey>
-	INSERT INTO user_info (
-			user_name, age, adress, gmt_create_user, gmt_update_user
+	
+	<insert id="insert" parameterMap="UserInfoDO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO user_info (
+			user_name, age, adress, gmt_create_user
 		)
 		VALUES (
-			#{userName}, #{age}, #{adress}, #{gmtCreateUser}, #{gmtUpdateUser}
+			#{userName}, #{age}, #{adress}, #{gmtCreateUser}
 		)
-		</insert>
-
-
+	</insert>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		DELETE FROM user_info WHERE id = #{id}
+	</delete>
+	
+	<update id="updateById" parameterMap="UserInfoDO">
+        UPDATE user_info SET 
+	        	<if test="userName!=null">
+					user_name = #{userName},
+				</if>
+	        	<if test="age!=null">
+					age = #{age},
+				</if>
+	        	<if test="adress!=null">
+					adress = #{adress},
+				</if>
+	        	<if test="gmtCreateUser!=null">
+					gmt_create_user = #{gmtCreateUser},
+				</if>
+	        	<if test="gmtUpdateUser!=null">
+					gmt_update_user = #{gmtUpdateUser},
+				</if>
+	        	<if test="gmtCreateDate!=null">
+					gmt_create_date = #{gmtCreateDate},
+				</if>
+	        	<if test="gmtUpdateDate!=null">
+					gmt_update_date = #{gmtUpdateDate},
+				</if>
+        WHERE id = #{id}        		
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM user_info
+		WHERE id = #{id}
+	</select>
+	
+	<select id="findByCondition" resultMap="BaseResultMap" parameterMap="UserInfoQueryDTO">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM user_info
+		<include refid="whereCondition" />
+	</select>
+	
+	<sql id="whereCondition">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id!=null">
+				and id = #{id}
+			</if>
+			<if test="userName!=null">
+				and user_name = #{userName}
+			</if>
+			<if test="age!=null">
+				and age = #{age}
+			</if>
+			<if test="adress!=null">
+				and adress = #{adress}
+			</if>
+			<if test="gmtCreateUser!=null">
+				and gmt_create_user = #{gmtCreateUser}
+			</if>
+			<if test="gmtUpdateUser!=null">
+				and gmt_update_user = #{gmtUpdateUser}
+			</if>
+			<if test="gmtCreateDate!=null">
+				and gmt_create_date = #{gmtCreateDate}
+			</if>
+			<if test="gmtUpdateDate!=null">
+				and gmt_update_date = #{gmtUpdateDate}
+			</if>
+		</trim>
+	</sql>
 </mapper>
